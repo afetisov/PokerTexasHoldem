@@ -1,0 +1,60 @@
+<project name="RMILearn" default="schema_export_2_file" basedir=".">
+	
+	<!-- Name of project and version -->
+	<property name="proj.name" value="PokerTH"/>
+	<property name="proj.version" value="1.0"/>
+	
+	<!-- Global properties for this build -->
+	<property name="src.java.dir" value="src"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="build.dir" value="bin"/>
+	
+	<!-- Classpath declaration -->
+	<path id="project.libs">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
+	</path>
+	<path id="project.classpath">
+		<path refid="project.libs"/>
+		<pathelement path = "commons.model.*" />
+		<pathelement location="${build.dir}"/> 
+	</path>
+	
+	<target name="schema_export_2_db" description="Exports a generated schema to DB">
+		<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="project.classpath"/>
+		<schemaexport 
+			config="${build.dir}/hibernate.cfg.xml"
+			quiet="no"
+			text="no"
+			drop="no"
+			delimiter=";"
+			output="${build.dir}/schema-export.sql">
+		</schemaexport>
+	</target>
+
+	<target name="schema_export_2_file" description="Exports a generated schema to file">
+		<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="project.classpath"/>
+		<schemaexport 
+			config="${build.dir}/hibernate.cfg.xml"
+			quiet="no"
+			text="yes"
+			drop="no"
+			delimiter=";"
+			output="${build.dir}/schema-export.sql">
+		</schemaexport>
+	</target>
+		
+	<target name="schema_drop_db" description="Drops schema from DB">
+		<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="project.classpath"/>
+		<schemaexport 
+			config="${build.dir}/hibernate.cfg.xml"
+			quiet="no"
+			text="no"
+			drop="yes"
+			delimiter=";"
+			output="${build.dir}/schema-export-drop.sql">
+		</schemaexport>
+	</target>
+</project>
